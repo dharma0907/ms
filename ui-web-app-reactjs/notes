@@ -1,0 +1,24 @@
+now all the docker files are ready
+
+1: we need to create docker image from docker files
+   
+     docker build . -t ui 
+
+above command is used to build the image and tagiing the image to ui
+
+2: we need to create a container out of that image, we run command 
+
+    docker run -d -p 8080:8080 ui
+
+it will create a container which will be accessed through 8080.
+
+
+3: name the container
+   
+    docker run --name test ui(ui is my image name)
+
+4: if docker file with some name then
+
+   docker build -f filename.ee
+
+   
