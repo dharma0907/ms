@@ -25,4 +25,5 @@ cpa:
         - key: app 
           operator: In 
           values:
-          - react-ui
+          - zuul-api
+    topologyKey: "kubernetes.io/hostname"
