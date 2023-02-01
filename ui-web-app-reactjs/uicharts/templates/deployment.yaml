@@ -9,7 +9,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "uicharts.selectorLabels" . | nindent 4 }}
+      {{- include "uicharts.selectorLabels" . | nindent 6 }}
   replicas: {{ .Values.replicaCount  }}
   strategy:
     rollingUpdate:
@@ -19,10 +19,10 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "uicharts.selectorLabels" . | nindent 6  }}
+        {{- include "uicharts.selectorLabels" . | nindent 8  }}
     spec:
-      - name:  {{ .Values.containers.name }}
-        image:  {{ .Values.image.repository  }}
-        ports:
-        - containerPort:  {{ .Values.service.port  }}
-          name:  react-ui
+     containers:
+     - name:  {{ .Values.containers.name }}
+       image:  {{ .Values.image.repository  }}
+       ports:
+       - containerPort:  {{ .Values.service.port  }}

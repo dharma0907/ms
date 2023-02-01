@@ -7,7 +7,7 @@ metadata:
   namespace: ms
 spec:
   selector:
-    {{- include "uicharts.selectorLabels" . | nindent 4}}
+    {{- include "uicharts.selectorLabels" . | nindent 6}}
   type: {{ .Values.service.type}}
   ports:
   - name: react-ui
