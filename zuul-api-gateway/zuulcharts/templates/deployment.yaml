@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  {{ .Release.Name }}
+  namespace: ms
+  labels:
+    {{ include "zuulcharts.labels" . |
+    nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{ include "zuulcharts.selectorLabels" . |
+      nindent 6 }}
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        {{ include "zuulcharts.selectorLabels" . |
+      nindent 8 }}
+    spec:
+      containers:
+      - name:  {{ .Values.containers.name }}
+        image:  {{ .Values.image.repository }}
+        ports:
+        - containerPort:  {{ .Values.service.targetPort }}
+          name:  zuul-api
+      affinity:
+    {{- toYaml .Values.cpa  | nindent 8 }}

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}
+  labels:
+     {{- include "zuulcharts.labels" . |
+     nindent 4 }} 
+  namespace: ms
+spec:
+  selector:
+    {{- include "zuulcharts.selectorLabels" . |
+    nindent 6}}
+  type: {{ .Values.service.type }}
+  ports:
+  - name: {{ .Values.service.name }}
+    protocol: TCP
+    port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.targetPort }}
+    nodePort: {{ .Values.service.nodePort }}

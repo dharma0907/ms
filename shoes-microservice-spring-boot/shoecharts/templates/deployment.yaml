@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "shoecharts.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "shoecharts.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "shoecharts.selectorLabels" . | nindent 8 }}
+      spec:
+       containers:
+         - name:  {{ .Values.container.name }}
+           image:  {{ .Values.image.repository }}
+           ports:
+           - containerPort:  {{ .Values.service.targetport }}
+             name:  shoe

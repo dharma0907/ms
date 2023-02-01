@@ -1,0 +1,17 @@
+replicaCount: 1
+
+image:
+  repository: dharma006/zull:shoe
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+
+service:
+  type: ClusterIP
+  port: 1002
+  targetport: 1002
+  name: shoe
+
+container:
+  name: shoe

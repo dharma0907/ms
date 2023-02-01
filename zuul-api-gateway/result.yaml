@@ -1,0 +1,86 @@
+---
+# Source: zuul/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: zuul-service
+  labels:
+    helm.sh/chart: zuul-0.1.0
+    app.kubernetes.io/name: zuul
+    app.kubernetes.io/instance: zuul
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm 
+  namespace: ms
+spec:
+  selector:
+      app.kubernetes.io/name: zuul
+      app.kubernetes.io/instance: zuul
+  type: NodePort
+  ports:
+  - name: zuul-service
+    protocol: TCP
+    port: 9999
+    targetPort: 9999
+    nodePort: 32470
+---
+# Source: zuul/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  zuul
+  namespace: ms
+  labels:
+    
+    helm.sh/chart: zuul-0.1.0
+    app.kubernetes.io/name: zuul
+    app.kubernetes.io/instance: zuul
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      
+      app.kubernetes.io/name: zuul
+      app.kubernetes.io/instance: zuul
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        
+        app.kubernetes.io/name: zuul
+        app.kubernetes.io/instance: zuul
+    spec:
+      containers:
+      - name:  zuul-api
+        image:  dharma006/zull:apigateway
+        ports:
+        - containerPort:  9999
+          name:  zuul-api
+      affinity:
+        null
+---
+# Source: zuul/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "zuul-test-connection"
+  labels:
+    helm.sh/chart: zuul-0.1.0
+    app.kubernetes.io/name: zuul
+    app.kubernetes.io/instance: zuul
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['zuul:9999']
+  restartPolicy: Never

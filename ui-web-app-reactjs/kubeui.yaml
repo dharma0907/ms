@@ -29,6 +29,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app:  react-ui
   name: react-ui
   namespace: ms
 spec:

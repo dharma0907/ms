@@ -1,0 +1,28 @@
+
+replicaCount: 1
+
+image:
+  repository: dharma006/zull:apigateway
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+service:
+  type: NodePort
+  port: 9999
+  targetPort: 9999
+  nodePort: 32470
+  name: zuul-service
+
+containers:
+  name:  zuul-api
+
+cpa:
+  podAffinity: 
+    requiredDuringSchedulingIgnoredDuringExecution: 
+    - labelSelector:
+        matchExpressions:
+        - key: app 
+          operator: In 
+          values:
+          - react-ui

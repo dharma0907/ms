@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+   {{- include "uicharts.labels" . | nindent 4  }}
+  name: {{ .Values.service.name}}
+  namespace: ms
+spec:
+  selector:
+    {{- include "uicharts.selectorLabels" . | nindent 4}}
+  type: {{ .Values.service.type}}
+  ports:
+  - name: react-ui
+    protocol: TCP
+    port: {{ .Values.service.port}}
+    targetPort: {{ .Values.service.targetPort}}

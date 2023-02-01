@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "uicharts.labels" . | 
+    nindent 4 }}
+  namespace: ms
+spec:
+  selector:
+    matchLabels:
+      {{- include "uicharts.selectorLabels" . | nindent 4 }}
+  replicas: {{ .Values.replicaCount  }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        {{- include "uicharts.selectorLabels" . | nindent 6  }}
+    spec:
+      - name:  {{ .Values.containers.name }}
+        image:  {{ .Values.image.repository  }}
+        ports:
+        - containerPort:  {{ .Values.service.port  }}
+          name:  react-ui
