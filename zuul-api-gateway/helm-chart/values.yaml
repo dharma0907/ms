@@ -12,7 +12,7 @@ service:
   port: 9999
   targetPort: 9999
   nodePort: 32470
-  name: zuul-service
+  name: zuul-api-gateway
 
 containers:
   name:  zuul-api
